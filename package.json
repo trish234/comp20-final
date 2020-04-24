@@ -1,0 +1,23 @@
+{
+  "name": "comp20-final",
+  "version": "1.0.0",
+  "description": "",
+  "main": "routes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trish234/comp20-final.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trish234/comp20-final/issues"
+  },
+  "homepage": "https://github.com/trish234/comp20-final#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
