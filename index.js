@@ -1,15 +1,18 @@
 const express = require("express");
 const app = express();
+const path = require('path');
+const router = express.Router();
 
 const hostname = '127.0.0.1';
 const port = 3000;
 
 /* Configure routes here ----- */
-app.get('/', function (req, res) {
-  res.send('Hello World');
+router.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname+'/index.html'));
 });
 /* ---------------------------- */
 
+app.use('/', router);
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
   });
