@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const path = require('path');
 const router = express.Router();
-
 const hostname = '127.0.0.1';
 const port = 3000;
 
@@ -13,6 +12,8 @@ router.get('/', function (req, res) {
 /* ---------------------------- */
 
 app.use('/', router);
+app.use('/public/', express.static('./public')); //show images on the pages
+
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
   });
