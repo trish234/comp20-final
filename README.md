@@ -5,3 +5,5 @@ To install all dependencies run **"npm install"**.
 
 To server run **"npm start"**.
 
+API we are using: https://www.petfinder.com/developers/api-docs
+
