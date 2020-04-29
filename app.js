@@ -4,10 +4,11 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 const path = require('path');
 const router = express.Router();
-const hostname = '127.0.0.1';
-const port = 3000;
+
 const dotenv = require('dotenv');
 dotenv.config();
+const hostname = process.env.HOSTNAME;
+const port = process.env.PORT;
 const fetch = require('node-fetch');
 
 let currentToken;
