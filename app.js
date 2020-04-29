@@ -47,8 +47,7 @@ app.use('/public/', express.static('./public')); //show images on the pages
 
 app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
-    //setInterval(intervalFunc, 120000); //should run every 2min
-    setInterval(intervalFunc, 9000); //testing purposes
+    setInterval(intervalFunc, 120000); //should run every 2min
 });
 
 
