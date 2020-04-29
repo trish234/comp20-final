@@ -4,17 +4,19 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 const path = require('path');
 const router = express.Router();
+const fetch = require('node-fetch');
 
+//enviornment variables
 const dotenv = require('dotenv');
 dotenv.config();
 const hostname = process.env.HOSTNAME;
-const port = process.env.PORT;
-const fetch = require('node-fetch');
+const node_env = process.env.NODE_ENV;
+
 
 let currentToken;
 
 function intervalFunc() {
-  console.log("In interval func");
+  console.log("Refreshing access token");
   fetch('https://api.petfinder.com/v2/oauth2/token', {
     method: "post",
     body: "grant_type=client_credentials&client_id=" + process.env.API_KEY + "&client_secret=" + process.env.API_SECRET,
@@ -35,10 +37,6 @@ router.get('/', function (req, res) {
 //special route-- we need to POST the data to the HTTP server of the API every 6 minutes
 //                to get the authentication token
 router.post('https://api.petfinder.com/v2/oauth2/token', function(req, res) {
-  console.log("in post");
-  //res.send("grant_type=client_credentials&client_id=" + proccess.env.API-KEY + "&client_secret=" + process.env.API-SECRET);
-  //console.log('Got body:', req.body);
-  //console.log('Access token:', req.body.access_token);
   res.sendStatus(200);
 });
 /* ----------------------------------------------------------------- */
@@ -46,10 +44,20 @@ router.post('https://api.petfinder.com/v2/oauth2/token', function(req, res) {
 app.use('/', router);
 app.use('/public/', express.static('./public')); //show images on the pages
 
-app.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+if (node_env === 'development'){
+  const port = process.env.PORT;
+  app.listen(port, hostname, () => {
+      console.log(`Server running at http://${hostname}:${port}/`);
+      setInterval(intervalFunc, 360000); //should run every 6min
+  });
+}
+//if in deployment
+else {
+  app.listen(hostname, () => {
+    console.log(`Server running at http://${hostname}`);
     setInterval(intervalFunc, 360000); //should run every 6min
-});
+  });
+}
 
 
   
