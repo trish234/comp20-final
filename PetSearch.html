@@ -127,45 +127,40 @@
 		<br>
 		
 		<div class="filter">
-			<div class="title" style="text-decoration: underline; text-align: center; font-size: 40px; color: #254A96"><strong>Animal Type</strong></div>
+			<div class="title" style="text-decoration: underline; text-align: center; font-size: 40px; color: #254A96">
+				<strong>What matters most?</strong>
+		    </div>
 			<br>
 			
-			<input type="checkbox" name="dog" value="dog">
-			<label for="dog">Dog</label>
+			<select>
+				<option value="0">Any Gender</option>
+				<option value="1">Male</option>
+				<option value="2">Female</option>
+			</select>
 			
 			<br>
-			
-			<input type="checkbox" name="cat" value="cat">
-			<label for="cat">Cat</label>
-			
-			<br>
-			
-			<input type="checkbox" name="fish" value="fish">
-			<label for="fish">Fish</label>
+			<select>
+				<option value="0">Possibly Spayed/Neutered</option>
+				<option value="1">Yes</option>
+				<option value="2">No</option>
+			</select>
 			
 			<br>
-			
-			<input type="checkbox" name="bird" value="bird">
-			<label for="bird">Bird</label>
-			
-			<br>
-			
-			<input type="checkbox" name="reptile" value="reptile">
-			<label for="reptile">Reptile</label>
-			
-			<br>
-			
-			<input type="checkbox" name="small_pet" value="small_pet">
-			<label for="small_pet">Small Pet</label>
+			<select>
+				<option value="0">Any Age</option>
+				<option value="1">Baby</option>
+				<option value="2">Young</option>
+				<option value="3">Adult</option>
+				<option value="4">Senior</option>
+			</select>
 			
 			<br><br>
 			
-			<input type="button" class="button" value="Filter">
+			<input onclick="queryDogs()" type="button" class="button" value="Filter">
 			
 		</div>
-		
 		<div class="search_output">
-			<div class="animal" style="display: inline-block; transform: translate(530px, -370px); color: #254A96"><strong>Animal</strong></div>
+			<div id="dog-return-box" class="animal" style="display: inline-block; transform: translate(530px, -370px); color: #254A96"><strong>Name</strong></div>
 			<div class="breed" style="display: inline-block; transform: translate(730px, -370px); color: #254A96"><strong>Breed</strong></div>
 			<div class="location" style="display: inline-block; transform: translate(930px, -370px); color: #254A96"><strong>Location</strong></div>
 		</div>
@@ -173,5 +168,32 @@
 		</div>
 	
 	</div>
+
+	<script>
+		//TODO make work for female or male dogs
+		function queryDogs(){
+			console.log("button clicked");
+			let dogsList;
+			var http = new XMLHttpRequest();
+			http.open('GET', '/dogs/female', true);
+			http.setRequestHeader('Content-type', 'application/json');
+			http.onreadystatechange = function() {
+				if (http.readyState === 4 && http.status === 200 && http.response) {
+					dogsList = JSON.parse(http.response);
+					dogsList = dogsList.animals;
+					console.log(dogsList);
+					document.getElementById("dog-return-box").innerHTML = JSON.stringify(dogsList);
+				}
+				else {
+					console.log("ERROR");
+				}
+			}
+			http.send();
+			console.log("hello");
+
+
+			
+		}
+	</script>
 </body>
 </html>
