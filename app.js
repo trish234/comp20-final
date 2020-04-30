@@ -51,7 +51,9 @@ router.post('https://api.petfinder.com/v2/oauth2/token', function(req, res) {
 });
 
 //routes for finding animals
-//get adoptable dogs in boston
+
+//get adoptable dogs of a particular gender
+//TODO make only in boston
 router.get('/dogs/:gender', function (req, res) {
   // Access dogs via: req.params.gender
   var gender = req.params.gender;
