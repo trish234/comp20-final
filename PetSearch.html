@@ -160,7 +160,7 @@
 			
 			<br><br>
 			
-			<input type="button" class="button" value="Filter">
+			<input onclick="queryDogs()" type="button" class="button" value="Filter">
 			
 		</div>
 		
@@ -173,5 +173,21 @@
 		</div>
 	
 	</div>
+
+	<script>
+		function queryDogs(){
+			console.log("button clicked");
+			var http = new XMLHttpRequest();
+			http.open('GET', '/dogs/female', true);
+			http.setRequestHeader('Content-type', 'application/json');
+			http.onreadystatechange = function() {
+			if (http.readyState === 4 && http.status === 200 && http.responseText) {
+				//console.log(http.responseText)
+				;
+			}
+			};
+			http.send();
+		}
+	</script>
 </body>
 </html>

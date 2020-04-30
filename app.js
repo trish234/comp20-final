@@ -25,10 +25,16 @@ function intervalFunc() {
   .then(res => res.json())
   .then(body => {
     console.log(body);
-    currentToken = body.access_token
+    currentToken = body.access_token;
     console.log(currentToken);
   });
 }
+
+/* 
+Note : access format from API website
+curl -H "Authorization: Bearer {YOUR_ACCESS_TOKEN}" GET https://api.petfinder.com/v2/{CATEGORY}/
+{ACTION}?{parameter_1}={value_1}&{parameter_2}={value_2}
+*/
 
 /* Configure routes here ------------------------------------------- */
 router.get('/', function (req, res) {
@@ -48,7 +54,24 @@ router.post('https://api.petfinder.com/v2/oauth2/token', function(req, res) {
 
 //routes for finding animals
 //get adoptable dogs in boston
-router.get('')
+router.get('/dogs/:gender', function (req, res) {
+  // Access dogs via: req.params.gender
+  console.log("token is: " + currentToken);
+  var gender = req.params.gender;
+  var url = 'https://api.petfinder.com/v2/animals?type=dog&gender=' + gender;
+  fetch(url, {
+    method: "get",
+    headers: { "Authorization": 'Bearer ' + currentToken}
+  })
+  .then(response => response.json())
+  .then(body => {
+    console.log("got some doggos");
+    console.log(body);
+    res.send(body);
+  });
+
+  
+});
 /* ----------------------------------------------------------------- */
 
 app.use('/', router);
@@ -67,7 +90,8 @@ if (node_env === 'development'){
 else {
   app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
-    setInterval(intervalFunc, 360000); //should run every 6min
+    //setInterval(intervalFunc, 360000); //should run every 6min
+    setInterval(intervalFunc, 500); //should run every 6min
   });
 }
 
