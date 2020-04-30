@@ -6,15 +6,19 @@ const path = require('path');
 const router = express.Router();
 const fetch = require('node-fetch');
 
-//enviornment variables
+//environment variables
 const dotenv = require('dotenv');
 dotenv.config();
 const hostname = process.env.HOSTNAME;
 const node_env = process.env.NODE_ENV;
 const port = process.env.PORT;
 
-let currentToken;
+//database
+const db = require("./database.js")
+db.accessDatabase();
+db.addUser("Trisha");
 
+let currentToken;
 function intervalFunc() {
   console.log("Refreshing access token");
   fetch('https://api.petfinder.com/v2/oauth2/token', {
