@@ -173,7 +173,6 @@
 
 	<script>
 		function queryDogs(){
-			console.log("button clicked");
 			//get gender
 			var genderElem = document.getElementById('gender-select');
 			var genderIndex = genderElem.selectedIndex;
@@ -190,15 +189,12 @@
 
 			let dogsList;
 			var http = new XMLHttpRequest();
-
-			//if (dogsList =)
 			http.open('GET', '/dogs/' + genderSelection + '/' + sizeSelection + '/' + ageSelection, true);
 			http.setRequestHeader('Content-type', 'application/json');
 			http.onreadystatechange = function() {
 				if (http.readyState === 4 && http.status === 200 && http.response) {
 					dogsList = JSON.parse(http.response);
 					dogsList = dogsList.animals;
-					console.log(dogsList);
 					document.getElementById("dog-return-box").innerHTML = JSON.stringify(dogsList);
 				}
 				else {
@@ -206,10 +202,6 @@
 				}
 			}
 			http.send();
-			console.log("hello");
-
-
-			
 		}
 	</script>
 </body>

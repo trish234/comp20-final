@@ -64,9 +64,9 @@ router.get('/dogs/:gender/:size/:age', function (req, res) {
   // Access dogs via: req.params.gender
   let gender = req.params.gender;
   if (gender == 'any'){
-    gender = 'male,female,unknown' ;
+    gender = 'male,female';
   }
-  let size = req.params.spayed;
+  let size = req.params.size;
   if (size == 'any'){
     size = 'small,medium,large,xlarge';
   }
@@ -74,15 +74,13 @@ router.get('/dogs/:gender/:size/:age', function (req, res) {
   if (age = 'any'){
     age = '	baby,young,adult,senior';
   }
-  let url = 'https://api.petfinder.com/v2/animals?status=adoptable&type=dog&gender=' + gender
-            + '&size=' + size + '&age=' + age;
+  let url = 'https://api.petfinder.com/v2/animals?status=adoptable&type=dog&gender=' + gender + '&size=' + size + '&age=' + age;
   fetch(url, {
     method: "get",
     headers: { "Authorization": 'Bearer ' + currentToken}
   })
   .then(response => response.json())
   .then(body => {
-    console.log("got some doggos");
     res.send(body);
   });
 
