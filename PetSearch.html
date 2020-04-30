@@ -61,34 +61,43 @@
 		margin-top: 30px;
 	}
 	
-	.pet_find {
-		 
+	#pet-find {
+		width: 100%;
 	}
-	
 	.filter {
 		border: solid medium #000000;
-		width: 350px;
-		height: 500px;
-		transform: translate(20px, 95px);
+		width: 30%;
+		height: 70%;
+		float: left;
+		margin-left: 5%;
 		font-size: 25px;
 		padding: 20px;
-		display: inline-block;
+		position: relative;
 	}
-	
-	.search_output {
-		font-size: 30px;
-	}
-	
 	.button {
 		background-color: #254A96;
 		border: none;
 		color: #FFFFFF;
 		padding: 5px 20px;
 		font-size: 15px;
-		transform: translate(110px);
-		
-			
+		transform: translate(110px);	
 	}
+	
+	.search_output {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: row;
+		font-size: 20px;
+	}
+	.animal-data {
+		display: flex;
+		flex-direction: column;
+		flex-flow: column wrap;
+		flex: 1;
+		color: black;
+	}
+	
+
  
 </style>
 </head>
@@ -106,18 +115,18 @@
 	<div class="w3-container w3-center w3-animate-top">
 		
 	<div class="phrase">
-		The Perfect Pet... <br>... Is Just A Click Away
+		The Perfect Dog... <br>... Is Just A Click Away
 		<br>
 		<div class="spacer"></div>
 		<div class="sub_phrase">
-			See More Below
+			See Adoptable Dogs Below
 		</div>
 	
 	</div>
 		
 	</div>
 	
-	<div class="pet_find">
+	<div id="pet-find">
 		<div class="w3-container w3-center w3-animate-opacity">
 			<hr style="height: 5px; background-color: black">
 		</div>
@@ -132,26 +141,28 @@
 		    </div>
 			<br>
 			
-			<select>
-				<option value="0">Any Gender</option>
-				<option value="1">Male</option>
-				<option value="2">Female</option>
+			<select id="gender-select">
+				<option value="any">Any Gender</option>
+				<option value="male">Male</option>
+				<option value="female">Female</option>
 			</select>
 			
 			<br>
-			<select>
-				<option value="0">Possibly Spayed/Neutered</option>
-				<option value="1">Yes</option>
-				<option value="2">No</option>
+			<select id="size-select">
+				<option value="any">Any Size</option>
+				<option value="small">Small</option>
+				<option value="medium">Medium</option>
+				<option value="large">Large</option>
+				<option value="xlarge">Huge</option>
 			</select>
 			
 			<br>
-			<select>
-				<option value="0">Any Age</option>
-				<option value="1">Baby</option>
-				<option value="2">Young</option>
-				<option value="3">Adult</option>
-				<option value="4">Senior</option>
+			<select id="age-select">
+				<option value="any">Any Age</option>
+				<option value="baby">Baby</option>
+				<option value="young">Young</option>
+				<option value="adult">Adult</option>
+				<option value="senior">Senior</option>
 			</select>
 			
 			<br><br>
@@ -160,9 +171,18 @@
 			
 		</div>
 		<div class="search_output">
-			<div id="dog-return-box" class="animal" style="display: inline-block; transform: translate(530px, -370px); color: #254A96"><strong>Name</strong></div>
-			<div class="breed" style="display: inline-block; transform: translate(730px, -370px); color: #254A96"><strong>Breed</strong></div>
-			<div class="location" style="display: inline-block; transform: translate(930px, -370px); color: #254A96"><strong>Location</strong></div>
+			<div class="animal-data">
+				<strong>Name</strong>
+				<div id="name-list"></div>
+			</div>
+			<div class="animal-data">
+				<strong>Breed</strong>
+				<div id="breed-list"></div>
+			</div>
+			<div class="animal-data">
+				<strong>Location</strong></div>
+				<div id="location-list">
+			</div>
 		</div>
 			
 		</div>
@@ -170,29 +190,40 @@
 	</div>
 
 	<script>
-		//TODO make work for female or male dogs
 		function queryDogs(){
-			console.log("button clicked");
+			//get gender
+			var genderElem = document.getElementById('gender-select');
+			var genderIndex = genderElem.selectedIndex;
+			var genderSelection = genderElem.options[genderIndex].value;
+			//get size
+			var sizeElem = document.getElementById('size-select');
+			var sizeIndex = sizeElem.selectedIndex;
+			var sizeSelection = sizeElem.options[sizeIndex].value;
+			//get age
+			var ageElem = document.getElementById('age-select');
+			var ageIndex = ageElem.selectedIndex;
+			var ageSelection = ageElem.options[ageIndex].value;
+			
+
 			let dogsList;
 			var http = new XMLHttpRequest();
-			http.open('GET', '/dogs/female', true);
+			http.open('GET', '/dogs/' + genderSelection + '/' + sizeSelection + '/' + ageSelection, true);
 			http.setRequestHeader('Content-type', 'application/json');
 			http.onreadystatechange = function() {
 				if (http.readyState === 4 && http.status === 200 && http.response) {
 					dogsList = JSON.parse(http.response);
 					dogsList = dogsList.animals;
-					console.log(dogsList);
-					document.getElementById("dog-return-box").innerHTML = JSON.stringify(dogsList);
+					for (var i = 0; i < dogsList.length; i++){
+						document.getElementById('name-list').innerHTML += dogsList[i].name;
+						document.getElementById('breed-list').innerHTML +=dogsList[i].breeds.primary;
+						document.getElementById('location-list').innerHTML +=dogsList[i].contact.address.city;
+					}
 				}
 				else {
 					console.log("ERROR");
 				}
 			}
 			http.send();
-			console.log("hello");
-
-
-			
 		}
 	</script>
 </body>
