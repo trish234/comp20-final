@@ -102,6 +102,8 @@ app.use('/ContactUs', router);
 app.use('/favorites', router);
 app.use('/public/', express.static('./public')); //show images on the pages
 app.use('/dogs/:gender', router);
+app.use('/addUser/:user', router);
+app.use('/resetDatabase', router);
 
 if (node_env === 'development'){
   intervalFunc();

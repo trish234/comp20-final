@@ -60,7 +60,7 @@
 		margin-top: 30px;
 	}
 	
-	.button {
+	button {
 		background-color: #254A96;
 		border: none;
 		color: #FFFFFF;
@@ -87,18 +87,39 @@
     </header>
 	
 	<div class="w3-container w3-center w3-animate-top">
-		
-	<div class="phrase">
-		We've saved your favorite dogs!
-		<br>
-		<div class="spacer"></div>
-		<div class="sub_phrase">
-			See Adoptable Dogs Below
-		</div>
-	
-	</div>
-		
-	</div>
+        <div class="phrase">
+            We've saved your favorite dogs!
+            <br>
+            <div class="spacer"></div>
+            <div class="sub_phrase">
+                See Adoptable Dogs Below
+            </div>
+        </div>
+		<div>
+            <input id="submit-user" type="text">Add a username here</input>
+            <button onclick="sumbitUser()">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        function sumbitUser(){
+            var username = document.getElementById('submit-user').value;
+            console.log(username);
+            var http = new XMLHttpRequest();
+			http.open('POST', '/addUser/' + username, true);
+			http.setRequestHeader('Content-type', 'application/json');
+			http.onreadystatechange = function() {
+				if (http.readyState === 4 && http.status === 200 && http.response) {
+					var response = http.response;
+                    console.log(response);
+				}
+				else {
+					console.log("ERROR");
+				}
+			}
+			http.send();
+        }
+    </script>
 	
 </body>
 </html>
