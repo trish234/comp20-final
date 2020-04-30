@@ -11,7 +11,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const hostname = process.env.HOSTNAME;
 const node_env = process.env.NODE_ENV;
-
+const port = process.env.PORT;
 
 let currentToken;
 
@@ -45,7 +45,7 @@ app.use('/', router);
 app.use('/public/', express.static('./public')); //show images on the pages
 
 if (node_env === 'development'){
-  const port = process.env.PORT;
+  
   app.listen(port, hostname, () => {
       console.log(`Server running at http://${hostname}:${port}/`);
       setInterval(intervalFunc, 360000); //should run every 6min
@@ -53,8 +53,8 @@ if (node_env === 'development'){
 }
 //if in deployment
 else {
-  app.listen(hostname, () => {
-    console.log(`Server running at http://${hostname}`);
+  app.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
     setInterval(intervalFunc, 360000); //should run every 6min
   });
 }
