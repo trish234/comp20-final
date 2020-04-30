@@ -9,7 +9,7 @@
 <style>
 	html, main, body {
     	background-color: #FDEBD0;
-        height: 1500px;
+        height: 1600px;
         width: 100%;
         margin: 0px;
         padding: 0px;
@@ -67,20 +67,20 @@
 	.filter {
 		border: solid medium #000000;
 		width: 30%;
-		height: 70%;
+		height: 50%;
 		float: left;
 		margin-left: 5%;
 		font-size: 25px;
 		padding: 20px;
 		position: relative;
+		text-align: center;
 	}
 	.button {
 		background-color: #254A96;
 		border: none;
 		color: #FFFFFF;
 		padding: 5px 20px;
-		font-size: 15px;
-		transform: translate(110px);	
+		font-size: 15px;	
 	}
 	
 	.search_output {
@@ -88,6 +88,7 @@
 		justify-content: space-between;
 		flex-direction: row;
 		font-size: 20px;
+		transform: translate(50px, 40px);
 	}
 	.animal-data {
 		display: flex;
@@ -95,6 +96,14 @@
 		flex-flow: column wrap;
 		flex: 1;
 		color: black;
+	}
+	
+	select {
+		font-size: 17px;
+	}
+	
+	.location-list {
+		transform: translate(-250px, 30px);
 	}
 	
 
@@ -131,13 +140,13 @@
 			<hr style="height: 5px; background-color: black">
 		</div>
 		
-		<div class="background" style="background-color: #FFFFFF; transform: translate(0px, -20px); height: 950px">
+		<div class="background" style="background-color: #FFFFFF; transform: translate(0px, -20px); height: 1250px">
 			
-		<br>
+		<br><br><br><br><br><br>
 		
 		<div class="filter">
 			<div class="title" style="text-decoration: underline; text-align: center; font-size: 40px; color: #254A96">
-				<strong>What matters most?</strong>
+				<strong>What Matters Most?</strong>
 		    </div>
 			<br>
 			
@@ -147,7 +156,7 @@
 				<option value="female">Female</option>
 			</select>
 			
-			<br>
+			<br><br>
 			<select id="size-select">
 				<option value="any">Any Size</option>
 				<option value="small">Small</option>
@@ -156,7 +165,7 @@
 				<option value="xlarge">Huge</option>
 			</select>
 			
-			<br>
+			<br><br>
 			<select id="age-select">
 				<option value="any">Any Age</option>
 				<option value="baby">Baby</option>
@@ -181,7 +190,7 @@
 			</div>
 			<div class="animal-data">
 				<strong>Location</strong></div>
-				<div id="location-list">
+				<div class="location-list" id="location-list">
 			</div>
 		</div>
 			
@@ -214,9 +223,9 @@
 					dogsList = JSON.parse(http.response);
 					dogsList = dogsList.animals;
 					for (var i = 0; i < dogsList.length; i++){
-						document.getElementById('name-list').innerHTML += dogsList[i].name;
-						document.getElementById('breed-list').innerHTML +=dogsList[i].breeds.primary;
-						document.getElementById('location-list').innerHTML +=dogsList[i].contact.address.city;
+						document.getElementById('name-list').innerHTML += dogsList[i].name + "<br>";
+						document.getElementById('breed-list').innerHTML +=dogsList[i].breeds.primary + "<br>";
+						document.getElementById('location-list').innerHTML +=dogsList[i].contact.address.city + "<br>";
 					}
 				}
 				else {
