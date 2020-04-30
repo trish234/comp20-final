@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale-1.0">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<title>Pet Search</title>
+	
+<style>
+	html, main, body {
+    	background-color: #FDEBD0;
+        height: 1500px;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+    }
+	
+    header {
+        display: flex;
+        flex-direction: row;
+		justify-content: space-between;
+		width: 100%;
+		align-items: center;
+        overflow: hidden;
+        background-color: #FFFFFF;
+	}
+	
+	a {
+		color: #000000;
+		font-size: 25px;
+		font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif"
+		
+	}
+	
+	a:hover {
+		font-size: 30px;
+	}
+	
+	.navigation {
+		padding: 20px;
+		margin: 20px
+	}
+	
+	.phrase {
+		font-size: 120px;
+		color: #254A96;
+		font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif";
+		text-align: center;
+		height: 70%;
+		margin-top: 30px;
+		background-color: #FDEBD0;
+		width: 100%;
+	}
+	
+	.sub_phrase {
+		font-size: 50px;
+		color: #000000;
+	}
+	
+	.spacer {
+		margin-top: 30px;
+	}
+	
+	.pet_find {
+		 
+	}
+	
+	.filter {
+		border: solid medium #000000;
+		width: 350px;
+		height: 500px;
+		transform: translate(20px, 95px);
+		font-size: 25px;
+		padding: 20px;
+		display: inline-block;
+	}
+	
+	.search_output {
+		font-size: 30px;
+	}
+	
+	.button {
+		background-color: #254A96;
+		border: none;
+		color: #FFFFFF;
+		padding: 5px 20px;
+		font-size: 15px;
+		transform: translate(110px);
+		
+			
+	}
+ 
+</style>
+</head>
+<body>
+	<header>
+    	<a href="/"><img src="public/pawsibilities.png" alt="logo" /></a>
+		
+		<div class="navigation">
+			<a href="/" style="text-decoration: none">Home   |</a>
+			<a href="PetSearch" style="text-decoration: none; color: #254A96">Pet Search   |</a>
+			<a href="ContactUs" style="text-decoration: none">Contact Us</a>
+		</div>
+    </header>
+	
+	<div class="w3-container w3-center w3-animate-top">
+		
+	<div class="phrase">
+		The Perfect Pet... <br>... Is Just A Click Away
+		<br>
+		<div class="spacer"></div>
+		<div class="sub_phrase">
+			See More Below
+		</div>
+	
+	</div>
+		
+	</div>
+	
+	<div class="pet_find">
+		<div class="w3-container w3-center w3-animate-opacity">
+			<hr style="height: 5px; background-color: black">
+		</div>
+		
+		<div class="background" style="background-color: #FFFFFF; transform: translate(0px, -20px); height: 850px">
+			
+		<br>
+		
+		<div class="filter">
+			<div class="title" style="text-decoration: underline; text-align: center; font-size: 40px; color: #254A96">
+				<strong>What matters most?</strong>
+		    </div>
+			<br>
+			
+			<select>
+				<option value="0">Any Gender</option>
+				<option value="1">Male</option>
+				<option value="2">Female</option>
+			</select>
+			
+			<br>
+			<select>
+				<option value="0">Possibly Spayed/Neutered</option>
+				<option value="1">Yes</option>
+				<option value="2">No</option>
+			</select>
+			
+			<br>
+			<select>
+				<option value="0">Any Age</option>
+				<option value="1">Baby</option>
+				<option value="2">Young</option>
+				<option value="3">Adult</option>
+				<option value="4">Senior</option>
+			</select>
+			
+			<br><br>
+			
+			<input onclick="queryDogs()" type="button" class="button" value="Filter">
+			
+		</div>
+		<div class="search_output">
+			<div id="dog-return-box" class="animal" style="display: inline-block; transform: translate(530px, -370px); color: #254A96"><strong>Name</strong></div>
+			<div class="breed" style="display: inline-block; transform: translate(730px, -370px); color: #254A96"><strong>Breed</strong></div>
+			<div class="location" style="display: inline-block; transform: translate(930px, -370px); color: #254A96"><strong>Location</strong></div>
+		</div>
+			
+		</div>
+	
+	</div>
+
+	<script>
+		//TODO make work for female or male dogs
+		function queryDogs(){
+			console.log("button clicked");
+			let dogsList;
+			var http = new XMLHttpRequest();
+			http.open('GET', '/dogs/female', true);
+			http.setRequestHeader('Content-type', 'application/json');
+			http.onreadystatechange = function() {
+				if (http.readyState === 4 && http.status === 200 && http.response) {
+					dogsList = JSON.parse(http.response);
+					dogsList = dogsList.animals;
+					console.log(dogsList);
+					document.getElementById("dog-return-box").innerHTML = JSON.stringify(dogsList);
+				}
+				else {
+					console.log("ERROR");
+				}
+			}
+			http.send();
+			console.log("hello");
+
+
+			
+		}
+	</script>
+</body>
+</html>
