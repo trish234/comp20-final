@@ -15,8 +15,6 @@ const port = process.env.PORT;
 
 //database
 const db = require("./database.js")
-db.accessDatabase();
-db.addUser("Trisha");
 
 let currentToken;
 function intervalFunc() {
@@ -48,11 +46,8 @@ router.get('/PetSearch', function (req, res) {
 router.get('/ContactUs', function (req, res) {
   res.sendFile(path.join(__dirname+'/ContactUs.html'));
 });
-router.get('/login', function (req, res) {
-  res.sendFile(path.join(__dirname+'/login.html'));
-});
-router.get('/signup', function (req, res) {
-  res.sendFile(path.join(__dirname+'/signup.html'));
+router.get('/Favorites', function (req, res) {
+  res.sendFile(path.join(__dirname+'/favorites.html'));
 });
 //special route-- we need to POST the data to the HTTP server of the API every 6 minutes
 //                to get the authentication token
@@ -87,16 +82,24 @@ router.get('/dogs/:gender/:size/:age', function (req, res) {
   .then(body => {
     res.send(body);
   });
+});
 
-  
+//User routes
+router.post('/addUser/:user', function (req, res) {
+  let user = req.params.user;
+  db.addUser(user);
+  res.send("success");
+});
+router.get('/resetDatabase', function (req, res) {
+  db.resetDatabase();
+  res.send("success");
 });
 /* ----------------------------------------------------------------- */
 
 app.use('/', router);
 app.use('/PetSearch', router);
 app.use('/ContactUs', router);
-app.use('/login', router);
-app.use('/signup', router);
+app.use('/favorites', router);
 app.use('/public/', express.static('./public')); //show images on the pages
 app.use('/dogs/:gender', router);
 
