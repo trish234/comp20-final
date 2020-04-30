@@ -24,9 +24,7 @@ function intervalFunc() {
   })
   .then(res => res.json())
   .then(body => {
-    console.log(body);
     currentToken = body.access_token;
-    console.log(currentToken);
   });
 }
 
@@ -56,7 +54,6 @@ router.post('https://api.petfinder.com/v2/oauth2/token', function(req, res) {
 //get adoptable dogs in boston
 router.get('/dogs/:gender', function (req, res) {
   // Access dogs via: req.params.gender
-  console.log("token is: " + currentToken);
   var gender = req.params.gender;
   var url = 'https://api.petfinder.com/v2/animals?type=dog&gender=' + gender;
   fetch(url, {
@@ -66,7 +63,6 @@ router.get('/dogs/:gender', function (req, res) {
   .then(response => response.json())
   .then(body => {
     console.log("got some doggos");
-    console.log(body);
     res.send(body);
   });
 
@@ -78,9 +74,10 @@ app.use('/', router);
 app.use('/PetSearch', router);
 app.use('/ContactUs', router);
 app.use('/public/', express.static('./public')); //show images on the pages
+app.use('/dogs/:gender', router);
 
 if (node_env === 'development'){
-  
+  intervalFunc();
   app.listen(port, hostname, () => {
       console.log(`Server running at http://${hostname}:${port}/`);
       setInterval(intervalFunc, 360000); //should run every 6min
@@ -88,10 +85,11 @@ if (node_env === 'development'){
 }
 //if in deployment
 else {
+  intervalFunc();
   app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
-    //setInterval(intervalFunc, 360000); //should run every 6min
-    setInterval(intervalFunc, 500); //should run every 6min
+    setInterval(intervalFunc, 360000); //should run every 6min
+
   });
 }
 

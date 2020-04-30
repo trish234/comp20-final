@@ -163,8 +163,8 @@
 			<input onclick="queryDogs()" type="button" class="button" value="Filter">
 			
 		</div>
-		
 		<div class="search_output">
+			<div id="dog-return-box"></div>
 			<div class="animal" style="display: inline-block; transform: translate(530px, -370px); color: #254A96"><strong>Animal</strong></div>
 			<div class="breed" style="display: inline-block; transform: translate(730px, -370px); color: #254A96"><strong>Breed</strong></div>
 			<div class="location" style="display: inline-block; transform: translate(930px, -370px); color: #254A96"><strong>Location</strong></div>
@@ -177,16 +177,21 @@
 	<script>
 		function queryDogs(){
 			console.log("button clicked");
+			let dogsList;
 			var http = new XMLHttpRequest();
 			http.open('GET', '/dogs/female', true);
 			http.setRequestHeader('Content-type', 'application/json');
 			http.onreadystatechange = function() {
-			if (http.readyState === 4 && http.status === 200 && http.responseText) {
-				//console.log(http.responseText)
-				;
+			if (http.readyState === 4 && http.status === 200 && http.response) {
+				console.log(http.response);
+				dogsList = JSON.parse(http.response);
+				dogsList = dogsList.animals;
+				console.log(dogsList);
 			}
 			};
 			http.send();
+			document.getElementById("dog-return-box").innerHTML = JSON.stringify(dogsList);
+			
 		}
 	</script>
 </body>
