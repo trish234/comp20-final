@@ -213,6 +213,11 @@
 				if (http.readyState === 4 && http.status === 200 && http.response) {
 					dogsList = JSON.parse(http.response);
 					dogsList = dogsList.animals;
+					// Clear previous text
+					document.getElementById('name-list').innerHTML = "";
+					document.getElementById('breed-list').innerHTML = "";
+					document.getElementById('location-list').innerHTML = "";
+					// Filter in new text
 					for (var i = 0; i < dogsList.length; i++){
 						document.getElementById('name-list').innerHTML += dogsList[i].name;
 						document.getElementById('breed-list').innerHTML +=dogsList[i].breeds.primary;
