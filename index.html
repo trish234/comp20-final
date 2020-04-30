@@ -1,38 +1,171 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale-1.0">
-        <title>Pawsibilities</title>
-        <style>
-            html, body, main {
-                background-color: #FDEBD0;
-                height: 100%;
-                width: 100%;
-                margin: 0px;
-                padding: 0px;
-            }
-            header {
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                overflow: hidden;
-                background-color: #FFFFFF;
-            }
-            article {
-                margin-top: 15px;
-                display: flex;
-                flex-direction: row;
-                overflow: hidden;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <a href="#default"><img src="/public/pawsibilities.png" alt="logo" /></a>
-        </header>
-        <article>
-            <img src="/public/catsanddogs.jpg" alt="cats and dogs" style="border-radius: 0px 25px 25px 0px;" />
-        </article>
-    </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale-1.0">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<title>Contact Us</title>
+	
+<style>
+	html, body, main {
+    	background-color: #FDEBD0;
+        height: 1800px;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+    }
+	
+    header {
+        display: flex;
+        flex-direction: row;
+		justify-content: space-between;
+		width: 100%;
+		align-items: center;
+        overflow: hidden;
+        background-color: #FFFFFF;
+	}
+	
+	a {
+		color: #000000;
+		font-size: 25px;
+		font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif"
+		
+	}
+	
+	a:hover {
+		font-size: 30px;
+	}
+	
+	.navigation {
+		padding: 20px;
+		margin: 20px
+	}
+	
+	.phrase {
+		font-size: 120px;
+		color: #254A96;
+		font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif";
+		text-align: center;
+		height: 70%;
+		margin-top: 30px;
+/*		background-color: #FDEBD0;*/
+		width: 100%;
+		transform: translate(0px, 10px)
+	}
+	
+	.sub_phrase {
+		font-size: 50px;
+		color: #000000;
+	}
+	
+	.spacer {
+		margin-top: 30px;
+	}
+	
+	.dog_pic {
+		
+	}
+	
+	.about_us {
+		font-size: 60px;
+		color: #000000;
+		margin-left: 30px;
+	}
+	
+	.container {
+		transform: translate(0px, -100px);
+		width: 25%;
+/*		border: solid medium #000000;*/
+		display: inline-block;
+	}
+	
+	.middle {
+/*		border: solid medium #000000;*/
+		width: 40%;
+		display: inline-block;
+	}
+	
+	li {
+		font-size: 35px;
+		color: #FDEBD0;
+		transform: translate(170px)
+	}
+ 
+</style>
+</head>
+<body>
+	<header>
+    	<a href="#default"><img src="public/pawsibilities.png" alt="logo" /></a>
+		
+		<div class="navigation">
+			<a href="index.html" style="text-decoration: none; color: #254A96">Home   |</a>
+			<a href="pet search.html" style="text-decoration: none">Pet Search   |</a>
+			<a href="Contact Us.html" style="text-decoration: none">Contact Us</a>
+		</div>
+    </header>
+	
+	<div class="w3-container w3-center w3-animate-top">
+		
+	<div class="phrase">
+		Imagine The Pawsibilities!
+		<br>
+		
+		<div class="spacer"></div>
+		
+		<img src="dog.png" alt="Cute Dog" height="250px">
+		
+		<div class="sub_phrase">
+			Learn More Below
+		</div>
+		
+	</div>
+		
+	</div>
+	
+	<div class="w3-container w3-center w3-animate-opacity">
+		<hr style="height: 5px; background-color: black">
+	</div>
+	
+	<br>
+	<br>
+	
+	
+	<div class="background" style="background-color: #254A96; transform: translate(0px, -60px); height: 1320px">
+		
+	<div class="about_us">
+		<br>
+		Our Mission Is To Connect 
+		<br><br> 
+		
+		<div class="container">
+			<img src="dog2.png" alt="Cute Dog" height="350px">
+		</div>
+		
+		<div class="middle" style="text-align: center; color: #FDEBD0">
+			<strong>The Right People <br> With <br> The Right Pet!</strong>
+		</div> 
+		
+		<div class="container">
+			<img src="family.png" alt="Loving Family" height="350px">
+		</div>
+		
+		<br>
+		
+		Here's How:
+		
+		<br>
+		
+		<ul>
+			<li>Shelters have pets that need new homes</li>
+			<br>
+			<li>People want to adopt shelter pets, but have trouble finding them</li>
+			<br>
+			<li>We bridge gap between </li>
+		</ul>
+		
+	</div>
+		
+	</div>
+	
+</body>
 </html>
