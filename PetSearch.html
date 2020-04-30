@@ -78,6 +78,11 @@
 	.search_output {
 		font-size: 30px;
 	}
+	.search_output div {
+		display: inline-block;
+		transform: translate(930px, -370px);
+		color: #254A96;
+	}
 	
 	.button {
 		background-color: #254A96;
@@ -127,7 +132,7 @@
 		<br>
 		
 		<div class="filter">
-			<div class="title" style="text-decoration: underline; text-align: center; font-size: 40px; color: #254A96"><strong>Animal Type</strong></div>
+			<div class="title" style="text-decoration: underline; text-align: center; font-size: 40px; color: #254A96"><strong>What kind of dog?</strong></div>
 			<br>
 			
 			<input type="checkbox" name="dog" value="dog">
@@ -165,9 +170,9 @@
 		</div>
 		<div class="search_output">
 			<div id="dog-return-box"></div>
-			<div class="animal" style="display: inline-block; transform: translate(530px, -370px); color: #254A96"><strong>Animal</strong></div>
-			<div class="breed" style="display: inline-block; transform: translate(730px, -370px); color: #254A96"><strong>Breed</strong></div>
-			<div class="location" style="display: inline-block; transform: translate(930px, -370px); color: #254A96"><strong>Location</strong></div>
+			<div class="name"><strong>Name</strong></div>
+			<div class="breed"><strong>Breed</strong></div>
+			<div class="location"><strong>Location</strong></div>
 		</div>
 			
 		</div>
@@ -182,15 +187,20 @@
 			http.open('GET', '/dogs/female', true);
 			http.setRequestHeader('Content-type', 'application/json');
 			http.onreadystatechange = function() {
-			if (http.readyState === 4 && http.status === 200 && http.response) {
-				console.log(http.response);
-				dogsList = JSON.parse(http.response);
-				dogsList = dogsList.animals;
-				console.log(dogsList);
+				if (http.readyState === 4 && http.status === 200 && http.response) {
+					dogsList = JSON.parse(http.response);
+					dogsList = dogsList.animals;
+					console.log(dogsList);
+					document.getElementById("dog-return-box").innerHTML = JSON.stringify(dogsList);
+				}
+				else {
+					console.log("ERROR");
+				}
 			}
-			};
 			http.send();
-			document.getElementById("dog-return-box").innerHTML = JSON.stringify(dogsList);
+			console.log("hello");
+
+
 			
 		}
 	</script>
