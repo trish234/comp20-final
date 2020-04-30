@@ -45,6 +45,10 @@ router.get('/ContactUs', function (req, res) {
 router.post('https://api.petfinder.com/v2/oauth2/token', function(req, res) {
   res.sendStatus(200);
 });
+
+//routes for finding animals
+//get adoptable dogs in boston
+router.get('')
 /* ----------------------------------------------------------------- */
 
 app.use('/', router);
