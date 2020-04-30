@@ -44,6 +44,12 @@ router.get('/PetSearch', function (req, res) {
 router.get('/ContactUs', function (req, res) {
   res.sendFile(path.join(__dirname+'/ContactUs.html'));
 });
+router.get('/login', function (req, res) {
+  res.sendFile(path.join(__dirname+'/login.html'));
+});
+router.get('/signup', function (req, res) {
+  res.sendFile(path.join(__dirname+'/signup.html'));
+});
 //special route-- we need to POST the data to the HTTP server of the API every 6 minutes
 //                to get the authentication token
 router.post('https://api.petfinder.com/v2/oauth2/token', function(req, res) {
@@ -54,10 +60,22 @@ router.post('https://api.petfinder.com/v2/oauth2/token', function(req, res) {
 
 //get adoptable dogs of a particular gender
 //TODO make only in boston
-router.get('/dogs/:gender', function (req, res) {
+router.get('/dogs/:gender/:size/:age', function (req, res) {
   // Access dogs via: req.params.gender
-  var gender = req.params.gender;
-  var url = 'https://api.petfinder.com/v2/animals?type=dog&gender=' + gender;
+  let gender = req.params.gender;
+  if (gender == 'any'){
+    gender = 'male,female,unknown' ;
+  }
+  let size = req.params.spayed;
+  if (size == 'any'){
+    size = 'small,medium,large,xlarge';
+  }
+  let age = req.params.age;
+  if (age = 'any'){
+    age = '	baby,young,adult,senior';
+  }
+  let url = 'https://api.petfinder.com/v2/animals?status=adoptable&type=dog&gender=' + gender
+            + '&size=' + size + '&age=' + age;
   fetch(url, {
     method: "get",
     headers: { "Authorization": 'Bearer ' + currentToken}
@@ -75,6 +93,8 @@ router.get('/dogs/:gender', function (req, res) {
 app.use('/', router);
 app.use('/PetSearch', router);
 app.use('/ContactUs', router);
+app.use('/login', router);
+app.use('/signup', router);
 app.use('/public/', express.static('./public')); //show images on the pages
 app.use('/dogs/:gender', router);
 

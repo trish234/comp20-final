@@ -106,11 +106,11 @@
 	<div class="w3-container w3-center w3-animate-top">
 		
 	<div class="phrase">
-		The Perfect Pet... <br>... Is Just A Click Away
+		The Perfect Dog... <br>... Is Just A Click Away
 		<br>
 		<div class="spacer"></div>
 		<div class="sub_phrase">
-			See More Below
+			See Adoptable Dogs Below
 		</div>
 	
 	</div>
@@ -132,26 +132,28 @@
 		    </div>
 			<br>
 			
-			<select>
-				<option value="0">Any Gender</option>
-				<option value="1">Male</option>
-				<option value="2">Female</option>
+			<select id="gender-select">
+				<option value="any">Any Gender</option>
+				<option value="male">Male</option>
+				<option value="female">Female</option>
 			</select>
 			
 			<br>
-			<select>
-				<option value="0">Possibly Spayed/Neutered</option>
-				<option value="1">Yes</option>
-				<option value="2">No</option>
+			<select id="size-select">
+				<option value="any">Any Size</option>
+				<option value="small">Small</option>
+				<option value="medium">Medium</option>
+				<option value="large">Large</option>
+				<option value="xlarge">Huge</option>
 			</select>
 			
 			<br>
-			<select>
-				<option value="0">Any Age</option>
-				<option value="1">Baby</option>
-				<option value="2">Young</option>
-				<option value="3">Adult</option>
-				<option value="4">Senior</option>
+			<select id="age-select">
+				<option value="any">Any Age</option>
+				<option value="baby">Baby</option>
+				<option value="young">Young</option>
+				<option value="adult">Adult</option>
+				<option value="senior">Senior</option>
 			</select>
 			
 			<br><br>
@@ -170,12 +172,27 @@
 	</div>
 
 	<script>
-		//TODO make work for female or male dogs
 		function queryDogs(){
 			console.log("button clicked");
+			//get gender
+			var genderElem = document.getElementById('gender-select');
+			var genderIndex = genderElem.selectedIndex;
+			var genderSelection = genderElem.options[genderIndex].value;
+			//get size
+			var sizeElem = document.getElementById('size-select');
+			var sizeIndex = sizeElem.selectedIndex;
+			var sizeSelection = sizeElem.options[sizeIndex].value;
+			//get age
+			var ageElem = document.getElementById('age-select');
+			var ageIndex = ageElem.selectedIndex;
+			var ageSelection = ageElem.options[ageIndex].value;
+			
+
 			let dogsList;
 			var http = new XMLHttpRequest();
-			http.open('GET', '/dogs/female', true);
+
+			//if (dogsList =)
+			http.open('GET', '/dogs/' + genderSelection + '/' + sizeSelection + '/' + ageSelection, true);
 			http.setRequestHeader('Content-type', 'application/json');
 			http.onreadystatechange = function() {
 				if (http.readyState === 4 && http.status === 200 && http.response) {
