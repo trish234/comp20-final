@@ -34,6 +34,12 @@ function intervalFunc() {
 router.get('/', function (req, res) {
   res.sendFile(path.join(__dirname+'/index.html'));
 });
+router.get('/PetSearch', function (req, res) {
+  res.sendFile(path.join(__dirname+'/PetSearch.html'));
+});
+router.get('/ContactUs', function (req, res) {
+  res.sendFile(path.join(__dirname+'/ContactUs.html'));
+});
 //special route-- we need to POST the data to the HTTP server of the API every 6 minutes
 //                to get the authentication token
 router.post('https://api.petfinder.com/v2/oauth2/token', function(req, res) {
@@ -42,6 +48,8 @@ router.post('https://api.petfinder.com/v2/oauth2/token', function(req, res) {
 /* ----------------------------------------------------------------- */
 
 app.use('/', router);
+app.use('/PetSearch', router);
+app.use('/ContactUs', router);
 app.use('/public/', express.static('./public')); //show images on the pages
 
 if (node_env === 'development'){
