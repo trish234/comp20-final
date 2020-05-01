@@ -100,7 +100,7 @@ router.post('/addUser/:user', function (req, res) {
   let user = req.params.user;
   if (connectedToDB) {
     const collection = client.db("pawsdb").collection("users");
-    collection.insertOne( { "username" : user} ).catch((err) => console.error(err));
+    collection.insertOne( { "username" : user, "favorites": []} ).catch((err) => console.error(err));
     res.send("success");
   } else {
     res.send("not connected to DB yet");
@@ -116,6 +116,31 @@ router.get('/findUser/:user', async function (req, res){
     const resultToSend = result == null ? "INVALID USER" : result;
     console.log("Made it out of find user with: "+ result);
     res.send(resultToSend);
+  } else {
+    res.send("not connected to DB yet");
+  }
+
+});
+router.get('/addFavorite/:user/:dog', async function (req, res){
+  if (connectedToDB) {
+    let user = req.params.user;
+    let dog = req.params.dog;
+    // const result = await db.findUser(user, client);
+    const collection = client.db("pawsdb").collection("users");
+    const result = await collection.findOne({"username" : user}).catch((e) => console.error(e));
+    const resultUser = result == null ? "INVALID USER" : result;
+    console.log("Made it out of find user with: "+ result);
+    if (resultUser != "INVALID USER"){
+      let favoritesList = resultUser.favorites;
+      favoritesList.append(dog);
+      collection.updateOne({ "username": user },
+      {
+        $set: { "favorites": favoritesList},
+      });
+      res.send("Added dog to favorites");
+    } else{
+      res.send("INVALID USER");
+    }
   } else {
     res.send("not connected to DB yet");
   }
@@ -142,6 +167,7 @@ app.use('/public/', express.static('./public')); //show images on the pages
 app.use('/dogs/:gender', router);
 app.use('/addUser/:user', router);
 app.use('/findUser/:user', router);
+app.use('/addFavorite/:user', router);
 app.use('/resetDatabase', router);
 
 if (node_env === 'development'){
