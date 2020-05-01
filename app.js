@@ -121,7 +121,7 @@ router.get('/findUser/:user', async function (req, res){
   }
 
 });
-router.get('/addFavorite/:user/:dog', async function (req, res){
+router.post('/addFavorite/:user/:dog', async function (req, res){
   if (connectedToDB) {
     let user = req.params.user;
     let dog = req.params.dog;
@@ -129,10 +129,10 @@ router.get('/addFavorite/:user/:dog', async function (req, res){
     const collection = client.db("pawsdb").collection("users");
     const result = await collection.findOne({"username" : user}).catch((e) => console.error(e));
     const resultUser = result == null ? "INVALID USER" : result;
-    console.log("Made it out of find user with: "+ result);
     if (resultUser != "INVALID USER"){
+      console.log("user is not invalid");
       let favoritesList = resultUser.favorites;
-      favoritesList.append(dog);
+      favoritesList.push(dog);
       collection.updateOne({ "username": user },
       {
         $set: { "favorites": favoritesList},
@@ -167,7 +167,7 @@ app.use('/public/', express.static('./public')); //show images on the pages
 app.use('/dogs/:gender', router);
 app.use('/addUser/:user', router);
 app.use('/findUser/:user', router);
-app.use('/addFavorite/:user', router);
+app.use('/addFavorite/:user/:dog', router);
 app.use('/resetDatabase', router);
 
 if (node_env === 'development'){

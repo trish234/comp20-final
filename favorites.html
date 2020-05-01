@@ -135,13 +135,13 @@
 			http.onload = function() {
                 console.log(JSON.stringify(http));
 				if (http.readyState === 4 && http.status === 200 && http.response) {
-                    console.log("here we are");
 					var response = http.response;
                     console.log("Response is: "+ response);
                     if (response === "INVALID USER"){
                         document.getElementById('result-box').setInnerHTML += "No user with that name exists.";
                     } else {
-                        document.getElementById('result-box').innerHTML += "Dogs List:";
+                        document.getElementById('result-box').innerHTML += "Dogs List:" + "<br />";
+                        document.getElementById('result-box').innerHTML += JSON.stringify(response.favorites);
                     }
 				}
 				else {
