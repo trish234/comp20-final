@@ -10,6 +10,10 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+    res.send("Success.");
+});
+
 app.post('/mylogin', (req, res) => {
     // Connect to MongoDB
     client.connect(url, { useUnifiedTopology: true }, (err, db) => {
