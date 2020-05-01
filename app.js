@@ -14,7 +14,18 @@ const node_env = process.env.NODE_ENV;
 const port = process.env.PORT;
 
 //database
-const db = require("./database.js")
+const MongoClient = require("mongodb").MongoClient;
+const uri = "mongodb+srv://trishacox:" + process.env.DB_PASS + "@cluster0-wuexi.mongodb.net/test?retryWrites=true&w=majority";
+let connectedToDB = false;
+const client =  new MongoClient(uri, { useNewUrlParser: true })
+client.connect((err) => {
+  if (err) {
+    console.error(err);
+  } else {
+    connectedToDB = true;
+  }
+});
+
 
 let currentToken;
 function intervalFunc() {
@@ -84,15 +95,42 @@ router.get('/dogs/:gender/:size/:age', function (req, res) {
   });
 });
 
-//User routes
+//Database routes
 router.post('/addUser/:user', function (req, res) {
   let user = req.params.user;
-  db.addUser(user);
-  res.send("success");
+  if (connectedToDB) {
+    const collection = client.db("pawsdb").collection("users");
+    collection.insertOne( { "username" : user} ).catch((err) => console.error(err));
+    res.send("success");
+  } else {
+    res.send("not connected to DB yet");
+  }
+
+});
+router.get('/findUser/:user', async function (req, res){
+  if (connectedToDB) {
+    let user = req.params.user;
+    // const result = await db.findUser(user, client);
+    const collection = client.db("pawsdb").collection("users");
+    const result = await collection.findOne({"username" : user}).catch((e) => console.error(e));
+    const resultToSend = result == null ? "INVALID USER" : result;
+    console.log("Made it out of find user with: "+ result);
+    res.send(resultToSend);
+  } else {
+    res.send("not connected to DB yet");
+  }
+
 });
 router.get('/resetDatabase', function (req, res) {
-  db.resetDatabase();
-  res.send("success");
+  if (connectedToDB) {
+    const collection = client.db("pawsdb").collection("users");
+    collection.remove({});  //clear the collection
+    console.log("success clearing the database");
+    res.send("success");
+  } else {
+    res.send("not connected to DB yet");
+  }
+
 });
 /* ----------------------------------------------------------------- */
 
@@ -103,6 +141,7 @@ app.use('/favorites', router);
 app.use('/public/', express.static('./public')); //show images on the pages
 app.use('/dogs/:gender', router);
 app.use('/addUser/:user', router);
+app.use('/findUser/:user', router);
 app.use('/resetDatabase', router);
 
 if (node_env === 'development'){

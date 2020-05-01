@@ -96,8 +96,16 @@
             </div>
         </div>
 		<div>
-            <input id="submit-user" type="text">Add a username here</input>
+            <label>Add a username here: </label>
+            <input id="submit-user" type="text"></input>
             <button onclick="sumbitUser()">Submit</button>
+            <br />
+            <p>Type your username below to see your favorite dogs list.</p>
+            <label>Your username: </label>
+            <input id="find-user" type="text" />
+            <button onclick="findUser()">Submit</button>
+            <br />
+            <div id="result-box"></div>
         </div>
     </div>
 
@@ -117,6 +125,29 @@
 					console.log("ERROR");
 				}
 			}
+			http.send();
+        }
+        function findUser(){
+            var userToFind = document.getElementById('find-user').value;
+            var http = new XMLHttpRequest();
+            http.open('GET', '/findUser/' + userToFind);
+			http.setRequestHeader('Content-type', 'application/json');
+			http.onload = function() {
+                console.log(JSON.stringify(http));
+				if (http.readyState === 4 && http.status === 200 && http.response) {
+                    console.log("here we are");
+					var response = http.response;
+                    console.log("Response is: "+ response);
+                    if (response === "INVALID USER"){
+                        document.getElementById('result-box').setInnerHTML += "No user with that name exists.";
+                    } else {
+                        document.getElementById('result-box').innerHTML += "Dogs List:";
+                    }
+				}
+				else {
+					console.log("ERROR");
+				}
+            }
 			http.send();
         }
     </script>
