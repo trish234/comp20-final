@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale-1.0">
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<title>Favorites</title>
+<style>
+	html, main, body {
+    	background-color: #FDEBD0;
+        height: 1500px;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+    }
+	
+    header {
+        display: flex;
+        flex-direction: row;
+		justify-content: space-between;
+		width: 100%;
+		align-items: center;
+        overflow: hidden;
+        background-color: #FFFFFF;
+	}
+	
+	a {
+		color: #000000;
+		font-size: 25px;
+		font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif"
+		
+	}
+	
+	a:hover {
+		font-size: 30px;
+	}
+	
+	.navigation {
+		padding: 20px;
+		margin: 20px
+	}
+	
+	.phrase {
+		font-size: 120px;
+		color: #254A96;
+		font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, "sans-serif";
+		text-align: center;
+		height: 70%;
+		margin-top: 30px;
+		background-color: #FDEBD0;
+		width: 100%;
+	}
+	
+	.sub_phrase {
+		font-size: 50px;
+		color: #000000;
+	}
+	
+	.spacer {
+		margin-top: 30px;
+	}
+	
+	button {
+		background-color: #254A96;
+		border: none;
+		color: #FFFFFF;
+		padding: 5px 20px;
+		font-size: 15px;
+		transform: translate(110px);	
+	}
+	
+	
+
+ 
+</style>
+</head>
+<body>
+	<header>
+    	<a href="/"><img src="public/pawsibilities.png" alt="logo" /></a>
+		
+		<div class="navigation">
+			<a href="/" style="text-decoration: none">Home   |</a>
+			<a href="PetSearch" style="text-decoration: none">Pet Search   |</a>
+            <a href="ContactUs" style="text-decoration: none">Contact Us   |</a>
+            <a href="Favorites" style="text-decoration: none; color: #254A96">Saved Favorites</a>
+		</div>
+    </header>
+	
+	<div class="w3-container w3-center w3-animate-top">
+        <div class="phrase">
+            We've saved your favorite dogs!
+            <br>
+            <div class="spacer"></div>
+            <div class="sub_phrase">
+                See Adoptable Dogs Below
+            </div>
+        </div>
+		<div>
+            <label>Add a username here: </label>
+            <input id="submit-user" type="text"></input>
+            <button onclick="sumbitUser()">Submit</button>
+            <br />
+            <p>Type your username below to see your favorite dogs list.</p>
+            <label>Your username: </label>
+            <input id="find-user" type="text" />
+            <button onclick="findUser()">Submit</button>
+            <br />
+            <div id="result-box"></div>
+        </div>
+    </div>
+
+    <script>
+        function sumbitUser(){
+            var username = document.getElementById('submit-user').value;
+            console.log(username);
+            var http = new XMLHttpRequest();
+			http.open('POST', '/addUser/' + username, true);
+			http.setRequestHeader('Content-type', 'application/json');
+			http.onreadystatechange = function() {
+				if (http.readyState === 4 && http.status === 200 && http.response) {
+					var response = http.response;
+                    console.log(response);
+				}
+				else {
+					console.log("ERROR");
+				}
+			}
+			http.send();
+        }
+        function findUser(){
+            var userToFind = document.getElementById('find-user').value;
+            var http = new XMLHttpRequest();
+            http.open('GET', '/findUser/' + userToFind);
+			http.setRequestHeader('Content-type', 'application/json');
+			http.onload = function() {
+                console.log(JSON.stringify(http));
+				if (http.readyState === 4 && http.status === 200 && http.response) {
+                    console.log("here we are");
+					var response = http.response;
+                    console.log("Response is: "+ response);
+                    if (response === "INVALID USER"){
+                        document.getElementById('result-box').setInnerHTML += "No user with that name exists.";
+                    } else {
+                        document.getElementById('result-box').innerHTML += "Dogs List:";
+                    }
+				}
+				else {
+					console.log("ERROR");
+				}
+            }
+			http.send();
+        }
+    </script>
+	
+</body>
+</html>

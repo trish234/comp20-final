@@ -6,15 +6,28 @@ const path = require('path');
 const router = express.Router();
 const fetch = require('node-fetch');
 
-//enviornment variables
+//environment variables
 const dotenv = require('dotenv');
 dotenv.config();
 const hostname = process.env.HOSTNAME;
 const node_env = process.env.NODE_ENV;
 const port = process.env.PORT;
 
-let currentToken;
+//database
+const MongoClient = require("mongodb").MongoClient;
+const uri = "mongodb+srv://trishacox:" + process.env.DB_PASS + "@cluster0-wuexi.mongodb.net/test?retryWrites=true&w=majority";
+let connectedToDB = false;
+const client =  new MongoClient(uri, { useNewUrlParser: true })
+client.connect((err) => {
+  if (err) {
+    console.error(err);
+  } else {
+    connectedToDB = true;
+  }
+});
 
+
+let currentToken;
 function intervalFunc() {
   console.log("Refreshing access token");
   fetch('https://api.petfinder.com/v2/oauth2/token', {
@@ -44,11 +57,8 @@ router.get('/PetSearch', function (req, res) {
 router.get('/ContactUs', function (req, res) {
   res.sendFile(path.join(__dirname+'/ContactUs.html'));
 });
-router.get('/login', function (req, res) {
-  res.sendFile(path.join(__dirname+'/login.html'));
-});
-router.get('/signup', function (req, res) {
-  res.sendFile(path.join(__dirname+'/signup.html'));
+router.get('/Favorites', function (req, res) {
+  res.sendFile(path.join(__dirname+'/favorites.html'));
 });
 //special route-- we need to POST the data to the HTTP server of the API every 6 minutes
 //                to get the authentication token
@@ -83,18 +93,56 @@ router.get('/dogs/:gender/:size/:age', function (req, res) {
   .then(body => {
     res.send(body);
   });
+});
 
-  
+//Database routes
+router.post('/addUser/:user', function (req, res) {
+  let user = req.params.user;
+  if (connectedToDB) {
+    const collection = client.db("pawsdb").collection("users");
+    collection.insertOne( { "username" : user} ).catch((err) => console.error(err));
+    res.send("success");
+  } else {
+    res.send("not connected to DB yet");
+  }
+
+});
+router.get('/findUser/:user', async function (req, res){
+  if (connectedToDB) {
+    let user = req.params.user;
+    // const result = await db.findUser(user, client);
+    const collection = client.db("pawsdb").collection("users");
+    const result = await collection.findOne({"username" : user}).catch((e) => console.error(e));
+    const resultToSend = result == null ? "INVALID USER" : result;
+    console.log("Made it out of find user with: "+ result);
+    res.send(resultToSend);
+  } else {
+    res.send("not connected to DB yet");
+  }
+
+});
+router.get('/resetDatabase', function (req, res) {
+  if (connectedToDB) {
+    const collection = client.db("pawsdb").collection("users");
+    collection.remove({});  //clear the collection
+    console.log("success clearing the database");
+    res.send("success");
+  } else {
+    res.send("not connected to DB yet");
+  }
+
 });
 /* ----------------------------------------------------------------- */
 
 app.use('/', router);
 app.use('/PetSearch', router);
 app.use('/ContactUs', router);
-app.use('/login', router);
-app.use('/signup', router);
+app.use('/favorites', router);
 app.use('/public/', express.static('./public')); //show images on the pages
 app.use('/dogs/:gender', router);
+app.use('/addUser/:user', router);
+app.use('/findUser/:user', router);
+app.use('/resetDatabase', router);
 
 if (node_env === 'development'){
   intervalFunc();
